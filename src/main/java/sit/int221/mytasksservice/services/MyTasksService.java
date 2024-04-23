@@ -12,7 +12,7 @@ public class MyTasksService {
     @Autowired
     private MyTasksRepository repository;
 
-    public List<MyTasks> getAllTasks(String[] param) {
+    public List<MyTasks> getAllTasks() {
             return repository.findAll();
     }
 }
