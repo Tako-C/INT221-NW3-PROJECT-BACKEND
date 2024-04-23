@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-//    @CrossOrigin(origins = "https://localhost:5173")
+@CrossOrigin(origins = "*")
 @RequestMapping("/v1/tasks")
 public class MyTasksController {
     @Autowired
@@ -28,9 +28,4 @@ public class MyTasksController {
                     .map(task -> modelMapper.map(task, MyTasksDTO.class))
                     .collect(Collectors.toList());
         }
-
-//    @GetMapping("")
-//    public List<MyTasks> getAllTasks(@RequestParam(required = false) String[] param) {
-//        return service.getAllTasks(param);
-//    }
 }
