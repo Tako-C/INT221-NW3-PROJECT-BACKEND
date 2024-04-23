@@ -22,13 +22,12 @@ public class MyTasksController {
     private ModelMapper modelMapper;
 
     @GetMapping("")
-    public ResponseEntity<List<MyTasksDTO>> getAllTasks(@RequestParam(required = false) String[] param) {
-        List<MyTasks> mytasks = service.getAllTasks(param);
-        List<MyTasksDTO> mytasksDTO = mytasks.stream()
-                .map(task -> modelMapper.map(task, MyTasksDTO.class))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(mytasksDTO);
-    }
+        public List<MyTasksDTO> getAllTasks() {
+            List<MyTasks> mytasks = service.getAllTasks();
+            return mytasks.stream()
+                    .map(task -> modelMapper.map(task, MyTasksDTO.class))
+                    .collect(Collectors.toList());
+        }
 
 //    @GetMapping("")
 //    public List<MyTasks> getAllTasks(@RequestParam(required = false) String[] param) {
