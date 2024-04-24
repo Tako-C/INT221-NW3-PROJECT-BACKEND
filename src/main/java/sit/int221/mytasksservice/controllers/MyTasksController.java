@@ -28,4 +28,10 @@ public class MyTasksController {
                     .map(task -> modelMapper.map(task, MyTasksDTO.class))
                     .collect(Collectors.toList());
         }
+
+
+    @GetMapping("/{id}")
+    public MyTasks getTaskById(@PathVariable Integer id){
+        return service.getTask(id);
+    }
 }
