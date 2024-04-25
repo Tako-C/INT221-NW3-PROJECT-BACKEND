@@ -16,14 +16,22 @@ public class MyTasksService {
     private MyTasksRepository repository;
 
     public List<MyTasks> getAllTasks() {
-            return repository.findAll();
+        List<MyTasks> tasks = repository.findAll();
+        for (MyTasks task : tasks) {
+            if (task.getAssignees() != null) {
+                task.setAssignees(task.getAssignees().trim());
+            }
+        }
+        return tasks;
     }
     public MyTasks getTask(Integer id) {
-        Optional<MyTasks> optionalTask = repository.findById(id);
-        if (optionalTask.isPresent()) {
-            return optionalTask.get();
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task " + id +" does not exist !!!");
+        MyTasks task = repository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task id " + id + " does not exist!")
+        );
+
+        if (task.getAssignees() != null) {
+            task.setAssignees(task.getAssignees().trim());
         }
+        return task;
     }
 }
