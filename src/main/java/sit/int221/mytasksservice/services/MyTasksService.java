@@ -7,6 +7,9 @@ import org.springframework.web.server.ResponseStatusException;
 import sit.int221.mytasksservice.entities.MyTasks;
 import sit.int221.mytasksservice.repositories.MyTasksRepository;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +35,14 @@ public class MyTasksService {
         if (task.getAssignees() != null) {
             task.setAssignees(task.getAssignees().trim());
         }
+        task.setCreate_Time(convertToUTC(task.getCreate_Time()));
+        task.setUpdate_Time(convertToUTC(task.getUpdate_Time()));
         return task;
+    }
+    private LocalDateTime convertToUTC(LocalDateTime localDateTime){
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+        ZonedDateTime utcDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC"));
+        return utcDateTime.toLocalDateTime();
+
     }
 }
