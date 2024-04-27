@@ -21,28 +21,21 @@ public class MyTasksService {
     public List<MyTasks> getAllTasks() {
         List<MyTasks> tasks = repository.findAll();
         for (MyTasks task : tasks) {
-            if (task.getAssignees() != null) {
-                task.setAssignees(task.getAssignees().trim());
-            }
+            task.setAssignees(task.getAssignees()!=null?task.getAssignees().trim():null);
+            task.setTitle(task.getTitle()!=null?task.getTitle().trim():null);
         }
         return tasks;
     }
     public MyTasks getTask(Integer id) {
-        MyTasks task = repository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task id " + id + " does not exist!")
-        );
-
-        if (task.getAssignees() != null) {
-            task.setAssignees(task.getAssignees().trim());
+        Optional<MyTasks> optionalTask = repository.findById(id);
+        if (optionalTask.isPresent()) {
+            MyTasks task = optionalTask.get();
+            task.setAssignees(task.getAssignees()!=null?task.getAssignees().trim():null);
+            task.setTitle(task.getTitle()!=null?task.getTitle().trim():null);
+            task.setDescription(task.getDescription()!=null?task.getDescription().trim():null);
+            return task;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task " + id +" does not exist !!!");
         }
-        task.setCreate_Time(convertToUTC(task.getCreate_Time()));
-        task.setUpdate_Time(convertToUTC(task.getUpdate_Time()));
-        return task;
-    }
-    private LocalDateTime convertToUTC(LocalDateTime localDateTime){
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-        ZonedDateTime utcDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC"));
-        return utcDateTime.toLocalDateTime();
-
     }
 }
