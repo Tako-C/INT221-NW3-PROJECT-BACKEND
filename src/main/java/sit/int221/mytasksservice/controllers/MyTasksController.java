@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
-@RequestMapping("/v1/tasks")
+@CrossOrigin(origins = "http://ip23nw3.sit.kmutt.ac.th:4000")
+@RequestMapping("/v1")
 public class MyTasksController {
     @Autowired
     private MyTasksService service;
@@ -21,7 +21,7 @@ public class MyTasksController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping("")
+    @GetMapping("/tasks")
         public List<MyTasksDTO> getAllTasks() {
             List<MyTasks> mytasks = service.getAllTasks();
             return mytasks.stream()
@@ -30,7 +30,7 @@ public class MyTasksController {
         }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/tasks/{id}")
     public MyTasks getTaskById(@PathVariable Integer id){
         return service.getTask(id);
     }
