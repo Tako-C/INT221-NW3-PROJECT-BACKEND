@@ -19,10 +19,10 @@ public class MyTasks {
         private String assignees;
         private String status;
 
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
         private LocalDateTime create_Time;
 
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
         private LocalDateTime update_Time;
 
 }

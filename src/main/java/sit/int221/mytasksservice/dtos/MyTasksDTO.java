@@ -8,7 +8,6 @@ import lombok.Setter;
 public class MyTasksDTO {
     private Integer id;
     private String title;
-    private String description;
     private String assignees;
     private String status;
 }
