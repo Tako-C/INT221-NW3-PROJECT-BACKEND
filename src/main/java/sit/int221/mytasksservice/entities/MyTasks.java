@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Timestamp;
-
 @Entity
 @Data
 @Table(name = "mytasks")
@@ -20,10 +19,10 @@ public class MyTasks {
         @Enumerated(EnumType.STRING)
         private TaskStatusEnum status;
 
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "UTC")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
         private Timestamp create_Time;
 
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "UTC")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
         private Timestamp update_Time;
 
 }

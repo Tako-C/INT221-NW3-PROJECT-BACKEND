@@ -30,9 +30,7 @@ public class MyTasksService {
             task.setAssignees(task.getAssignees()!=null?task.getAssignees().trim():null);
             task.setTitle(task.getTitle()!=null?task.getTitle().trim():null);
             task.setDescription(task.getDescription()!=null?task.getDescription().trim():null);
-
             return task;
-
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task " + id +" does not exist !!!");
         }
