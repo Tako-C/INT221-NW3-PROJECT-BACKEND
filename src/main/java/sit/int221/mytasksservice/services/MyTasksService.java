@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.mytasksservice.entities.MyTasks;
 import sit.int221.mytasksservice.repositories.MyTasksRepository;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import org.modelmapper.ModelMapper;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,9 +30,12 @@ public class MyTasksService {
             task.setAssignees(task.getAssignees()!=null?task.getAssignees().trim():null);
             task.setTitle(task.getTitle()!=null?task.getTitle().trim():null);
             task.setDescription(task.getDescription()!=null?task.getDescription().trim():null);
+
             return task;
+
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task " + id +" does not exist !!!");
         }
     }
+
 }

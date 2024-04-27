@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -17,12 +17,13 @@ public class MyTasks {
         private String title;
         private String description;
         private String assignees;
-        private String status;
+        @Enumerated(EnumType.STRING)
+        private TaskStatusEnum status;
 
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-        private LocalDateTime create_Time;
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "UTC")
+        private Timestamp create_Time;
 
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-        private LocalDateTime update_Time;
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "UTC")
+        private Timestamp update_Time;
 
 }
