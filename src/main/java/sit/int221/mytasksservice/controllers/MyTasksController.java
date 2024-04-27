@@ -2,9 +2,9 @@ package sit.int221.mytasksservice.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sit.int221.mytasksservice.dtos.MyTasksDTO;
+import sit.int221.mytasksservice.dtos.response.TaskDetailResponseDTO;
+import sit.int221.mytasksservice.dtos.response.TaskTableResponseDTO;
 import sit.int221.mytasksservice.entities.MyTasks;
 import sit.int221.mytasksservice.services.MyTasksService;
 
@@ -22,16 +22,18 @@ public class MyTasksController {
     private ModelMapper modelMapper;
 
     @GetMapping("/tasks")
-        public List<MyTasksDTO> getAllTasks() {
+        public List<TaskTableResponseDTO> getAllTasks() {
             List<MyTasks> mytasks = service.getAllTasks();
             return mytasks.stream()
-                    .map(task -> modelMapper.map(task, MyTasksDTO.class))
+                    .map(task -> modelMapper.map(task, TaskTableResponseDTO.class))
                     .collect(Collectors.toList());
         }
-
-
     @GetMapping("/tasks/{id}")
-    public MyTasks getTaskById(@PathVariable Integer id){
-        return service.getTask(id);
+    public TaskDetailResponseDTO getTaskById(@PathVariable Integer id) {
+        MyTasks task = service.getTask(id);
+        return modelMapper.map(task, TaskDetailResponseDTO.class);
     }
+
+
+
 }
