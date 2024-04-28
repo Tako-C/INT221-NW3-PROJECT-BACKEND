@@ -16,8 +16,8 @@ public class TaskDetailResponseDTO {
     private String assignees;
     private TaskStatusEnum status;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "UTC")
-    private Timestamp create_Time;
+    private Timestamp createdOn;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "UTC")
-    private Timestamp update_Time;
+    private Timestamp updatedOn;
 }

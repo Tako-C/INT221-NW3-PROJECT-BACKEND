@@ -9,6 +9,7 @@ import sit.int221.mytasksservice.repositories.MyTasksRepository;
 import org.modelmapper.ModelMapper;
 import java.util.List;
 import java.util.Optional;
+import java.util.Collections;
 
 @Service
 public class MyTasksService {
@@ -20,6 +21,10 @@ public class MyTasksService {
         for (MyTasks task : tasks) {
             task.setAssignees(task.getAssignees()!=null?task.getAssignees().trim():null);
             task.setTitle(task.getTitle()!=null?task.getTitle().trim():null);
+        }
+        if (tasks.isEmpty()) {
+//            throw new ResponseStatusException(HttpStatus.OK, "No tasks found");
+            return Collections.emptyList();
         }
         return tasks;
     }
@@ -34,6 +39,6 @@ public class MyTasksService {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task " + id +" does not exist !!!");
         }
-    }
+  }
 
 }
