@@ -9,6 +9,7 @@ import sit.int221.mytasksservice.repositories.MyTasksRepository;
 import org.modelmapper.ModelMapper;
 import java.util.List;
 import java.util.Optional;
+import java.util.Collections;
 
 @Service
 public class MyTasksService {
@@ -21,6 +22,9 @@ public class MyTasksService {
             task.setAssignees(task.getAssignees()!=null?task.getAssignees().trim():null);
             task.setTitle(task.getTitle()!=null?task.getTitle().trim():null);
         }
+        if (tasks.isEmpty()) {
+        return Collections.emptyList();
+    }
         return tasks;
     }
     public MyTasks getTask(Integer id) {
