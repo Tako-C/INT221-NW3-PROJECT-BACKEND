@@ -23,8 +23,10 @@ public class MyTasksService {
             task.setTitle(task.getTitle()!=null?task.getTitle().trim():null);
         }
         if (tasks.isEmpty()) {
-        return Collections.emptyList();
-    }
+//            throw new ResponseStatusException(HttpStatus.OK, "No tasks found");
+            return Collections.emptyList();
+        }
+
         return tasks;
     }
     public MyTasks getTask(Integer id) {
@@ -38,6 +40,6 @@ public class MyTasksService {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task " + id +" does not exist !!!");
         }
-    }
+  }
 
 }
