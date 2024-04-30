@@ -26,6 +26,7 @@ public class MyTasksService {
 //            throw new ResponseStatusException(HttpStatus.OK, "No tasks found");
             return Collections.emptyList();
         }
+
         return tasks;
     }
     public MyTasks getTask(Integer id) {
