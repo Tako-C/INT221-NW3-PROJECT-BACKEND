@@ -38,7 +38,8 @@ public class MyTasksService {
             trimTaskFields(task);
             return task;
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task " + id +" does not exist !!!");
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task " + id +" does not exist !!!");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
     public MyTasks createNewTask(TaskAddRequestDTO taskAddRequestDTO){

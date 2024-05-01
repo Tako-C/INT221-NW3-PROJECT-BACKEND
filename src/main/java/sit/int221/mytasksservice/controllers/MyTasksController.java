@@ -2,11 +2,8 @@ package sit.int221.mytasksservice.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.config.Task;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import sit.int221.mytasksservice.dtos.response.request.TaskAddRequestDTO;
 import sit.int221.mytasksservice.dtos.response.request.TaskDeleteRequestDTO;
 import sit.int221.mytasksservice.dtos.response.request.TaskUpdateRequestDTO;
@@ -17,11 +14,10 @@ import sit.int221.mytasksservice.services.MyTasksService;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:5173"})
+@CrossOrigin(origins = {"http://localhost:5173","http://ip23nw3.sit.kmutt.ac.th:8080"})
 
 @RequestMapping("/v1")
 public class MyTasksController {
