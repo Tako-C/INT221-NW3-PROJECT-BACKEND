@@ -1,4 +1,4 @@
-package sit.int221.mytasksservice.dtos.response;
+package sit.int221.mytasksservice.dtos.response.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
