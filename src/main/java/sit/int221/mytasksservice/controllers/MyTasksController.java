@@ -50,9 +50,6 @@ public class MyTasksController {
     public ResponseEntity<TaskUpdateRequestDTO> updateTask (@RequestBody TaskAddRequestDTO taskAddRequestDTO,@PathVariable Integer id){
         MyTasks updatedTask = service.getTask(id);
         TaskUpdateRequestDTO updatedTaskDTO = modelMapper.map(updatedTask, TaskUpdateRequestDTO.class);
-//        if (updatedTask == null) {
-//            return ResponseEntity.notFound().build();
-//        }
 
         updatedTask.setTitle(taskAddRequestDTO.getTitle());
         updatedTask.setDescription(taskAddRequestDTO.getDescription());
@@ -66,20 +63,13 @@ public class MyTasksController {
     public ResponseEntity<TaskDeleteRequestDTO> deleteTask(@PathVariable Integer id) {
         MyTasks deletedTask = service.getTask(id);
         TaskDeleteRequestDTO deletedTaskDTO = modelMapper.map(deletedTask, TaskDeleteRequestDTO.class);
-//        if (deletedTask == null) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//        }
+
         deletedTask.setId(deletedTaskDTO.getId());
         deletedTask.setTitle(deletedTaskDTO.getTitle());
-        deletedTask.setDescription(deletedTaskDTO.getDescription());
         deletedTask.setAssignees(deletedTaskDTO.getAssignees());
         deletedTask.setStatus(deletedTaskDTO.getStatus());
 
         service.deleteTask(id);
         return ResponseEntity.ok().body(deletedTaskDTO);
     }
-
-
-
-
 }
