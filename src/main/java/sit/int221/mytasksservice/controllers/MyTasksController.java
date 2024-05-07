@@ -2,6 +2,7 @@ package sit.int221.mytasksservice.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.mytasksservice.dtos.response.request.TaskAddRequestDTO;
@@ -39,13 +40,33 @@ public class MyTasksController {
         MyTasks task = service.getTask(id);
         return modelMapper.map(task, TaskDetailResponseDTO.class);
     }
+//    @PostMapping("/tasks")
+//    public ResponseEntity<TaskAddRequestDTO> addTask(@RequestBody TaskAddRequestDTO taskAddRequestDTO ){
+//        MyTasks  createdTask = service.createNewTask(taskAddRequestDTO);
+//        TaskAddRequestDTO createdTaskDTO = modelMapper.map(createdTask, TaskAddRequestDTO.class);
+//        URI location = URI.create("/tasks/");
+//        if (createdTaskDTO.getTitle() == null) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//        return ResponseEntity.created(location).body(createdTaskDTO);
+//    }
+
+
     @PostMapping("/tasks")
-    public ResponseEntity<TaskAddRequestDTO> addTask(@RequestBody TaskAddRequestDTO taskAddRequestDTO ){
-        MyTasks  createdTask = service.createNewTask(taskAddRequestDTO);
-        TaskAddRequestDTO createdTaskDTO = modelMapper.map(createdTask, TaskAddRequestDTO.class);
-        URI location = URI.create("/tasks/");
-        return ResponseEntity.created(location).body(createdTaskDTO);
+    public ResponseEntity<TaskAddRequestDTO> addTask(@RequestBody TaskAddRequestDTO taskAddRequestDTO) {
+        try {
+            MyTasks createdTask = service.createNewTask(taskAddRequestDTO);
+            TaskAddRequestDTO createdTaskDTO = modelMapper.map(createdTask, TaskAddRequestDTO.class);
+            URI location = URI.create("/tasks/");
+
+            return ResponseEntity.created(location).body(createdTaskDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+
+        }
     }
+
     @PutMapping("/tasks/{id}")
     public ResponseEntity<TaskUpdateRequestDTO> updateTask (@RequestBody TaskAddRequestDTO taskAddRequestDTO,@PathVariable Integer id){
         MyTasks updatedTask = service.getTask(id);
