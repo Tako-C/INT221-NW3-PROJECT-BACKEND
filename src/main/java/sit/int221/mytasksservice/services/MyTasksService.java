@@ -24,11 +24,6 @@ public class MyTasksService {
         for (MyTasks task : tasks) {
             trimTaskFields(task);
         }
-        if (tasks.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.OK, "No tasks found");
-//            return Collections.emptyList();
-        }
-
         return tasks;
     }
     public MyTasks getTask(Integer id) {
