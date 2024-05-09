@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class StatusDetailResponseDTO {
     private Integer id;
-    private String statusName;
-    private String statusDescription;
+    private String name;
+    private String description;
 }

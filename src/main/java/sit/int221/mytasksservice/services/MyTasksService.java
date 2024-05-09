@@ -1,21 +1,21 @@
 package sit.int221.mytasksservice.services;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.mytasksservice.dtos.response.request.TaskAddRequestDTO;
 import sit.int221.mytasksservice.dtos.response.request.TaskUpdateRequestDTO;
-import sit.int221.mytasksservice.dtos.response.response.AppErrorHandler;
-import sit.int221.mytasksservice.dtos.response.response.ItemNotFoundException;
 import sit.int221.mytasksservice.entities.MyTasks;
 import sit.int221.mytasksservice.entities.Status;
 import sit.int221.mytasksservice.repositories.MyTasksRepository;
-import sit.int221.mytasksservice.repositories.StatusRepository;
 import org.modelmapper.ModelMapper;
+import sit.int221.mytasksservice.repositories.StatusRepository;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.Collections;
+
 @Service
 public class MyTasksService {
     @Autowired
@@ -24,7 +24,6 @@ public class MyTasksService {
     private StatusRepository statusRepository;
     @Autowired
     private ModelMapper modelMapper;
-
     public List<MyTasks> getAllTasks() {
         List<MyTasks> tasks = repository.findAll();
         for (MyTasks task : tasks) {
@@ -32,6 +31,7 @@ public class MyTasksService {
         }
 //        if (tasks.isEmpty()) {
 //            throw new ResponseStatusException(HttpStatus.OK, "No tasks found");
+////            return Collections.emptyList();
 //        }
 
         return tasks;
@@ -41,25 +41,30 @@ public class MyTasksService {
         if (optionalTask.isPresent()) {
             MyTasks task = optionalTask.get();
             trimTaskFields(task);
-
-
             return task;
         } else {
-            throw new ItemNotFoundException();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
-    public MyTasks createNewTask(TaskAddRequestDTO taskAddRequestDTO) {
+    public MyTasks createNewTask(TaskAddRequestDTO taskAddRequestDTO){
         MyTasks task = modelMapper.map(taskAddRequestDTO , MyTasks.class);
+        Status statusCheckName = statusRepository.findByName(taskAddRequestDTO.getStatusName());
         trimTaskFields(task);
-        if (taskAddRequestDTO.getStatusName() == null) {
-            task.setStatus(getStatusFromName("No Status"));
-        } else {
-            task.setStatus(getStatusFromName(taskAddRequestDTO.getStatusName()));
-        }
+//        if (statusCheckName == null) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "StatusName is not found !!");
+//
+//        }
+            if (taskAddRequestDTO.getStatusName() == null) {
+                task.setStatus(getStatusFromName("No Status"));
 
-        return repository.save(task);
+            } else {
+                task.setStatus(getStatusFromName(taskAddRequestDTO.getStatusName()));
+            }
+            return repository.save(task);
+
+
+
     }
-
     public MyTasks updateTask(TaskUpdateRequestDTO taskUpdateRequestDTO) {
         MyTasks task = modelMapper.map(taskUpdateRequestDTO , MyTasks.class);
         trimTaskFields(task);
@@ -76,7 +81,6 @@ public class MyTasksService {
 
         return repository.save(task);
     }
-
     public void deleteTask(Integer id) {
         repository.deleteById(id);
     }
@@ -88,7 +92,7 @@ public class MyTasksService {
         task.setDescription(task.getDescription() != null ? task.getDescription().trim() : null);
     }
     private Status getStatusFromName(String statusName) {
-        Status status = statusRepository.findByStatusName(statusName);
+        Status status = statusRepository.findByName(statusName);
         if (status == null) {
             throw new RuntimeException("Status not found with name: " + statusName);
         }

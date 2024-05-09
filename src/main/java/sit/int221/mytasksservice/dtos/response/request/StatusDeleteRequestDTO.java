@@ -1,11 +1,12 @@
-package sit.int221.mytasksservice.dtos.response.response;
+package sit.int221.mytasksservice.dtos.response.request;
+
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @Setter
-public class StatusTableResponseDTO {
+public class StatusDeleteRequestDTO {
     private Integer id;
     private String name;
     private String description;
-
 }

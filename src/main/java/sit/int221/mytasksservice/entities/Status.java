@@ -1,5 +1,6 @@
 package sit.int221.mytasksservice.entities;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,8 @@ public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String statusName;
-    private String statusDescription;
+    @Size(min=1, max=50)
+    private String name;
+    @Size(min=1, max=200)
+    private String description;
 }

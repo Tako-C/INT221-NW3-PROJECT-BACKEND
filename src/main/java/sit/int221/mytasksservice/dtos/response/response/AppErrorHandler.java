@@ -27,13 +27,13 @@ public class AppErrorHandler extends Throwable {
         return response;
     }
 
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = GeneralException.class)
     public static Map<String, Object> handleInternalServerValueError(HttpServletRequest request){
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("message", HttpStatus.BAD_REQUEST);
+        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        response.put("message", HttpStatus.INTERNAL_SERVER_ERROR);
         response.put("instance", request.getRequestURI());
 
         return response;
