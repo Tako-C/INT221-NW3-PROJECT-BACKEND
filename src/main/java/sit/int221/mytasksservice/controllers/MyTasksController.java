@@ -100,19 +100,19 @@ public TaskDetailResponseDTO getTaskById(@PathVariable Integer id)  {
 //        service.updateTask(updatedTask);
 //        return ResponseEntity.ok().body(updatedTaskDTO);
 //    }
-    @PutMapping("/tasks/{id}")
-    public ResponseEntity<TaskUpdateRequestDTO> updateTask (@RequestBody TaskAddRequestDTO taskAddRequestDTO,@PathVariable Integer id) {
-        MyTasks updatedTask = service.getTask(id);
-        TaskUpdateRequestDTO updatedTaskDTO = modelMapper.map(updatedTask, TaskUpdateRequestDTO.class);
+@PutMapping("/tasks/{id}")
+public ResponseEntity<TaskUpdateRequestDTO> updateTask (@RequestBody TaskAddRequestDTO taskAddRequestDTO,@PathVariable Integer id) {
+    MyTasks updatedTask = service.getTask(id);
+    TaskUpdateRequestDTO updatedTaskDTO = modelMapper.map(updatedTask, TaskUpdateRequestDTO.class);
 
-        updatedTaskDTO.setTitle(taskAddRequestDTO.getTitle());
-        updatedTaskDTO.setDescription(taskAddRequestDTO.getDescription());
-        updatedTaskDTO.setAssignees(taskAddRequestDTO.getAssignees());
-        updatedTaskDTO.setStatusName(taskAddRequestDTO.getStatusName());
+    updatedTaskDTO.setTitle(taskAddRequestDTO.getTitle());
+    updatedTaskDTO.setDescription(taskAddRequestDTO.getDescription());
+    updatedTaskDTO.setAssignees(taskAddRequestDTO.getAssignees());
+    updatedTaskDTO.setStatusName(taskAddRequestDTO.getStatusName());
 
-        service.updateTask(updatedTaskDTO);
-        return ResponseEntity.ok().body(updatedTaskDTO);
-    }
+    service.updateTask(updatedTaskDTO);
+    return ResponseEntity.ok().body(updatedTaskDTO);
+}
 
     @DeleteMapping("/tasks/{id}")
     public ResponseEntity<TaskDeleteRequestDTO> deleteTask(@PathVariable Integer id) {
