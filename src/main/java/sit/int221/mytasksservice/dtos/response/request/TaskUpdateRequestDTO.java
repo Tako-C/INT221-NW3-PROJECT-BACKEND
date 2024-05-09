@@ -20,6 +20,4 @@ public class TaskUpdateRequestDTO {
     private String assignees;
 //    private TaskStatusEnum status;
     private String statusName;
-
-
 }
