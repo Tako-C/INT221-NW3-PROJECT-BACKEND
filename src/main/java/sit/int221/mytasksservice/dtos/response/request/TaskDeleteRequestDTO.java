@@ -10,7 +10,7 @@ public class TaskDeleteRequestDTO {
     private Integer id;
     private String title;
     private String assignees;
-    private TaskStatusEnum status;
-
+//    private TaskStatusEnum status;
+    private String statusName;
 
 }

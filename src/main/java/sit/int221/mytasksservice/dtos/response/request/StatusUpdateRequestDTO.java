@@ -10,14 +10,8 @@ import sit.int221.mytasksservice.entities.TaskStatusEnum;
 @Getter
 @Setter
 @DynamicUpdate
-public class TaskUpdateRequestDTO {
+public class StatusUpdateRequestDTO {
     private Integer id;
-    @Size(min=1, max=100)
-    private String title;
-    @Size(min=1, max=500)
-    private String description;
-    @Size(min=1, max=30)
-    private String assignees;
-//    private TaskStatusEnum status;
     private String statusName;
+    private String statusDescription;
 }
