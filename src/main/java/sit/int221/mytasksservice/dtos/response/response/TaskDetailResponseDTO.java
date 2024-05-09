@@ -14,7 +14,8 @@ public class TaskDetailResponseDTO {
     private String title;
     private String description;
     private String assignees;
-    private TaskStatusEnum status;
+//    private TaskStatusEnum status;
+    private String statusName;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "UTC")
     private Timestamp createdOn;
 
