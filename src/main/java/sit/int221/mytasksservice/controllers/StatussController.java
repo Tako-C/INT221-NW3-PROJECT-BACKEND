@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.mytasksservice.dtos.response.request.StatusAddRequestDTO;
+import sit.int221.mytasksservice.dtos.response.request.StatusDeleteRequestDTO;
+import sit.int221.mytasksservice.dtos.response.request.StatusUpdateRequestDTO;
 import sit.int221.mytasksservice.dtos.response.response.StatusDetailResponseDTO;
 import sit.int221.mytasksservice.dtos.response.response.StatusTableResponseDTO;
 import sit.int221.mytasksservice.entities.Status;
@@ -50,5 +52,33 @@ public class StatussController {
         return ResponseEntity.created(location).body(addRequestDTO);
     }
 
-}
+    @PutMapping("/statuses/{id}")
+    public ResponseEntity<StatusUpdateRequestDTO> updateTask (@RequestBody StatusAddRequestDTO statusAddRequestDTO, @PathVariable Integer id) {
+        Status updatedStatus = service.getStatus(id);
+        StatusUpdateRequestDTO updatedStatusDTO = modelMapper.map(updatedStatus, StatusUpdateRequestDTO.class);
 
+        updatedStatusDTO.setStatusName(statusAddRequestDTO.getStatusName());
+        updatedStatusDTO.setStatusDescription(statusAddRequestDTO.getStatusDescription());
+
+        service.updateStatus(updatedStatusDTO);
+        return ResponseEntity.ok().body(updatedStatusDTO);
+    }
+
+    @DeleteMapping("/statuses/{id}")
+    public ResponseEntity<StatusDeleteRequestDTO> deleteStatus(@PathVariable Integer id) {
+        Status deletedStatus = service.getStatus(id);
+        StatusDeleteRequestDTO deletedStatusDTO = modelMapper.map(deletedStatus, StatusDeleteRequestDTO.class);
+        deletedStatus.setId(deletedStatusDTO.getId());
+        deletedStatus.setStatusName(deletedStatusDTO.getStatusName());
+        deletedStatus.setStatusDescription(deletedStatusDTO.getStatusDescription());
+        service.deleteStatus(id);
+        return ResponseEntity.ok().body(deletedStatusDTO);
+    }
+
+    @DeleteMapping("/statuses/{id}/{newId}")
+    public ResponseEntity<StatusDeleteRequestDTO> deleteStatusAndReassign(@PathVariable Integer id, @PathVariable Integer newId) {
+        Status deletedStatus = service.reassignAndDeleteStatus(id, newId);
+        StatusDeleteRequestDTO deletedStatusDTO = modelMapper.map(deletedStatus, StatusDeleteRequestDTO.class);
+        return ResponseEntity.ok().body(deletedStatusDTO);
+    }
+}
