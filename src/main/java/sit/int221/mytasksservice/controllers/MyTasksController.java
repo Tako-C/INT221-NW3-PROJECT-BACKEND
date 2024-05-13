@@ -59,7 +59,7 @@ public class MyTasksController {
     updatedTaskDTO.setTitle(taskAddRequestDTO.getTitle());
     updatedTaskDTO.setDescription(taskAddRequestDTO.getDescription());
     updatedTaskDTO.setAssignees(taskAddRequestDTO.getAssignees());
-    updatedTaskDTO.setStatusName(taskAddRequestDTO.getStatusName());
+    updatedTaskDTO.setStatus(taskAddRequestDTO.getStatus());
 
     service.updateTask(updatedTaskDTO);
     return ResponseEntity.ok().body(updatedTaskDTO);

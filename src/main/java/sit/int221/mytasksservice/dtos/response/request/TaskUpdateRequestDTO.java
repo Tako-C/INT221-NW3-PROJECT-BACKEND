@@ -19,5 +19,5 @@ public class TaskUpdateRequestDTO {
     @Size(min=1, max=30)
     private String assignees;
 //    private TaskStatusEnum status;
-    private String statusName;
+    private String status;
 }

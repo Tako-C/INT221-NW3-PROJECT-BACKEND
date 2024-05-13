@@ -16,10 +16,16 @@ public class TaskDetailResponseDTO {
     private String description;
     private String assignees;
 //    private TaskStatusEnum status;
-    private String statusName;
+//    private String statusName;
+    private Status status;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "UTC")
     private Timestamp createdOn;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "UTC")
     private Timestamp updatedOn;
+
+    public String getStatus() {
+        return status.getName() ;
+    }
 }
+

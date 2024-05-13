@@ -19,7 +19,7 @@ public class TaskAddRequestDTO {
     @Size(min=1, max=30)
     private String assignees;
 //    private String status;
-    private String statusName;
+    private String status;
 
 
 }

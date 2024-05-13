@@ -71,15 +71,18 @@ public class StatusService {
 
     public Status updateStatus(StatusUpdateRequestDTO statusUpdateRequestDTO) {
         trimStatusFieldsEdit(statusUpdateRequestDTO);
-        Status status = modelMapper.map(statusUpdateRequestDTO, Status.class);
+//        Status status = modelMapper.map(statusUpdateRequestDTO, Status.class);
 
         if ( "No Status".equals(statusUpdateRequestDTO.getName()) || statusUpdateRequestDTO.getId() == 1) {
             throw new GeneralException();
+
+
         }
+        Status status = modelMapper.map(statusUpdateRequestDTO, Status.class);
         if(statusUpdateRequestDTO.getName().isEmpty() || statusUpdateRequestDTO.getName() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,  "Status Name is not null or empty !!");
         }
-        if(statusUpdateRequestDTO.getDescription().isEmpty()){
+        if(statusUpdateRequestDTO.getDescription() != null && statusUpdateRequestDTO.getDescription().isEmpty()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,  "Status Description is empty !!");
         }
         Status existingStatus = repository.findByName(statusUpdateRequestDTO.getName());

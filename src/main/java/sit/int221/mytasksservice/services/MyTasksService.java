@@ -47,18 +47,27 @@ public class MyTasksService {
         }
     }
     public MyTasks createNewTask(TaskAddRequestDTO taskAddRequestDTO){
+        Integer findbyIdStatus = Integer.valueOf(taskAddRequestDTO.getStatus());
+
         MyTasks task = modelMapper.map(taskAddRequestDTO , MyTasks.class);
-        Status statusCheckName = statusRepository.findByName(taskAddRequestDTO.getStatusName());
+//        Status statusCheckName = statusRepository.findByName(taskAddRequestDTO.getStatus());
         trimTaskFields(task);
 //        if (statusCheckName == null) {
 //            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "StatusName is not found !!");
 //
 //        }
-            if (taskAddRequestDTO.getStatusName() == null) {
+            if (taskAddRequestDTO.getDescription() != null &&taskAddRequestDTO.getDescription().isEmpty()) {
+            task.setDescription(null);
+            }
+            if (taskAddRequestDTO.getAssignees() != null && taskAddRequestDTO.getAssignees().isEmpty()) {
+                task.setAssignees(null);
+            }
+
+        if (taskAddRequestDTO.getStatus() == null) {
                 task.setStatus(getStatusFromName("No Status"));
 
             } else {
-                task.setStatus(getStatusFromName(taskAddRequestDTO.getStatusName()));
+                task.setStatus(statusRepository.findById(findbyIdStatus).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, " Status Not found")));
             }
             return repository.save(task);
 
@@ -66,17 +75,19 @@ public class MyTasksService {
 
     }
     public MyTasks updateTask(TaskUpdateRequestDTO taskUpdateRequestDTO) {
+        Integer findbyIdStatus = Integer.valueOf(taskUpdateRequestDTO.getStatus());
         MyTasks task = modelMapper.map(taskUpdateRequestDTO , MyTasks.class);
         trimTaskFields(task);
         task.setTitle(taskUpdateRequestDTO.getTitle());
         task.setDescription(taskUpdateRequestDTO.getDescription());
         task.setAssignees(taskUpdateRequestDTO.getAssignees());
 
-        if (taskUpdateRequestDTO.getStatusName() == null) {
+        if (taskUpdateRequestDTO.getStatus() == null) {
             task.setStatus(getStatusFromName("No Status"));
-            taskUpdateRequestDTO.setStatusName("No Status");
+            taskUpdateRequestDTO.setStatus("No Status");
         } else {
-            task.setStatus(getStatusFromName(taskUpdateRequestDTO.getStatusName()));
+//            task.setStatus(getStatusFromName(taskUpdateRequestDTO.getStatus()));
+            task.setStatus(statusRepository.findById(findbyIdStatus).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, " Status Not found")));
         }
 
         return repository.save(task);
