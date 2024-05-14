@@ -1,6 +1,8 @@
 package sit.int221.mytasksservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,7 +16,7 @@ import sit.int221.mytasksservice.repositories.StatusRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Service
 public class MyTasksService {
@@ -46,6 +48,21 @@ public class MyTasksService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
+
+    public List<MyTasks> getAllTasksSortByAsc(String sort) {
+        return repository.findAll(Sort.by(Sort. Direction.ASC, sort));
+    }
+
+//    public List<MyTasks> getAllFilter(String filterStatuses ,String sort){
+//        return repository.findAll().stream().filter(task -> task.getStatus().getName().equals(filterStatuses)).collect(Collectors.toList());
+//
+//    }
+public List<MyTasks> getAllFilter(String filterStatuses, String sort) {
+    List<MyTasks> filteredTasks = getAllTasksSortByAsc(sort).stream()
+            .filter(task -> task.getStatus().getName().equals(filterStatuses))
+            .collect(Collectors.toList());
+    return filteredTasks;
+}
     public MyTasks createNewTask(TaskAddRequestDTO taskAddRequestDTO){
         Integer findbyIdStatus = Integer.valueOf(taskAddRequestDTO.getStatus());
 

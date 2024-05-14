@@ -37,14 +37,12 @@ public class StatusService {
     }
     public Status getStatus(Integer id){
         Optional<Status> optionalStatus = repository.findById(id);
-
         if (optionalStatus.isPresent()) {
             Status status = optionalStatus.get();
 
             return status;
         } else {
             throw new ItemNotFoundException();
-//            throw new RuntimeException();
         }
     }
     public Status createNewStatus(StatusAddRequestDTO statusAddRequestDTO) {
