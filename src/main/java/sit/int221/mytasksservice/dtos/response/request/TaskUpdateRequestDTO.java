@@ -18,8 +18,6 @@ public class TaskUpdateRequestDTO {
     private String description;
     @Size(min=1, max=30)
     private String assignees;
-    private TaskStatusEnum status;
-
-
-
+//    private TaskStatusEnum status;
+    private String status;
 }

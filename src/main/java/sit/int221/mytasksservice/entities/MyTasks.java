@@ -21,8 +21,8 @@ public class MyTasks {
         private String description;
         @Size(min=1, max=30)
         private String assignees;
-        @Enumerated(EnumType.STRING)
-        private TaskStatusEnum status;
+//        @Enumerated(EnumType.STRING)
+//        private TaskStatusEnum status;
 
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
         @Column(insertable = false,updatable = false)
@@ -31,5 +31,9 @@ public class MyTasks {
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
         @Column(insertable = false,updatable = false)
         private Timestamp updatedOn;
+
+        @ManyToOne
+        @JoinColumn(name = "statuss_id")
+        private  Status status;
 
 }

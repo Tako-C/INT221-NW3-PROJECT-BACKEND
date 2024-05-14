@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:5173","http://ip23nw3.sit.kmutt.ac.th:3333"})
+@CrossOrigin(origins = {"http://localhost:5173","http://ip23nw3.sit.kmutt.ac.th","http://intproj23.sit.kmutt.ac.th"})
 
-@RequestMapping("/v1")
+@RequestMapping("/v2")
 public class MyTasksController {
     @Autowired
     private MyTasksService service;
@@ -40,31 +40,15 @@ public class MyTasksController {
         MyTasks task = service.getTask(id);
         return modelMapper.map(task, TaskDetailResponseDTO.class);
     }
-//    @PostMapping("/tasks")
-//    public ResponseEntity<TaskAddRequestDTO> addTask(@RequestBody TaskAddRequestDTO taskAddRequestDTO ){
-//        MyTasks  createdTask = service.createNewTask(taskAddRequestDTO);
-//        TaskAddRequestDTO createdTaskDTO = modelMapper.map(createdTask, TaskAddRequestDTO.class);
-//        URI location = URI.create("/tasks/");
-//        if (createdTaskDTO.getTitle() == null) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//        return ResponseEntity.created(location).body(createdTaskDTO);
-//    }
-
-
     @PostMapping("/tasks")
-    public ResponseEntity<TaskAddRequestDTO> addTask(@RequestBody TaskAddRequestDTO taskAddRequestDTO) {
-        try {
-            MyTasks createdTask = service.createNewTask(taskAddRequestDTO);
-            TaskAddRequestDTO createdTaskDTO = modelMapper.map(createdTask, TaskAddRequestDTO.class);
-            URI location = URI.create("/tasks/");
-
-            return ResponseEntity.created(location).body(createdTaskDTO);
-        } catch (Exception e) {
+    public ResponseEntity<TaskAddRequestDTO> addTask(@RequestBody TaskAddRequestDTO taskAddRequestDTO ){
+        MyTasks  createdTask = service.createNewTask(taskAddRequestDTO);
+        TaskAddRequestDTO createdTaskDTO = modelMapper.map(createdTask, TaskAddRequestDTO.class);
+        URI location = URI.create("/tasks/");
+        if (createdTaskDTO.getTitle() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
-
         }
+        return ResponseEntity.created(location).body(createdTaskDTO);
     }
 
     @PutMapping("/tasks/{id}")
@@ -72,14 +56,14 @@ public class MyTasksController {
         MyTasks updatedTask = service.getTask(id);
         TaskUpdateRequestDTO updatedTaskDTO = modelMapper.map(updatedTask, TaskUpdateRequestDTO.class);
 
-        updatedTask.setTitle(taskAddRequestDTO.getTitle());
-        updatedTask.setDescription(taskAddRequestDTO.getDescription());
-        updatedTask.setAssignees(taskAddRequestDTO.getAssignees());
-        updatedTask.setStatus(taskAddRequestDTO.getStatus());
+    updatedTaskDTO.setTitle(taskAddRequestDTO.getTitle());
+    updatedTaskDTO.setDescription(taskAddRequestDTO.getDescription());
+    updatedTaskDTO.setAssignees(taskAddRequestDTO.getAssignees());
+    updatedTaskDTO.setStatus(taskAddRequestDTO.getStatus());
 
-        service.updateTask(updatedTask);
-        return ResponseEntity.ok().body(updatedTaskDTO);
-    }
+    service.updateTask(updatedTaskDTO);
+    return ResponseEntity.ok().body(updatedTaskDTO);
+}
     @DeleteMapping("/tasks/{id}")
     public ResponseEntity<TaskDeleteRequestDTO> deleteTask(@PathVariable Integer id) {
         MyTasks deletedTask = service.getTask(id);
@@ -88,7 +72,7 @@ public class MyTasksController {
         deletedTask.setId(deletedTaskDTO.getId());
         deletedTask.setTitle(deletedTaskDTO.getTitle());
         deletedTask.setAssignees(deletedTaskDTO.getAssignees());
-        deletedTask.setStatus(deletedTaskDTO.getStatus());
+        deletedTaskDTO.setStatusName(deletedTask.getStatus().getDescription());
 
         service.deleteTask(id);
         return ResponseEntity.ok().body(deletedTaskDTO);
