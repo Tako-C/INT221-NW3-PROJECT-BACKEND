@@ -43,7 +43,8 @@ public class MyTasksController {
 
 //------------------------ Sortby ------------------------
     @GetMapping(value = "/tasks", params = {"sortBy","FilterStatuses"})
-    public List<TaskTableResponseDTO> getTaskAsc(@RequestParam(value = "sortBy",defaultValue = "createdOn") String sort, @RequestParam(value = "FilterStatuses",required = false) String filterStatuses) {
+    public List<TaskTableResponseDTO> getTaskAsc(@RequestParam(value = "sortBy",defaultValue = "createdOn") String sort,
+                                                 @RequestParam(value = "FilterStatuses",required = false) List<String> filterStatuses) {
         List<MyTasks> tasks ;
         if (filterStatuses == null || filterStatuses.isEmpty()){
             tasks = service.getAllTasksSortByAsc(sort);
