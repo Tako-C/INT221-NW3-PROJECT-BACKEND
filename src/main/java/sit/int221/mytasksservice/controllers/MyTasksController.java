@@ -40,6 +40,31 @@ public class MyTasksController {
         MyTasks task = service.getTask(id);
         return modelMapper.map(task, TaskDetailResponseDTO.class);
     }
+
+//------------------------ Sortby ------------------------
+    @GetMapping(value = "/tasks", params = {"sortBy","FilterStatuses"})
+    public List<TaskTableResponseDTO> getTaskAsc(@RequestParam(value = "sortBy",defaultValue = "createdOn") String sort, @RequestParam(value = "FilterStatuses",required = false) String filterStatuses) {
+        List<MyTasks> tasks ;
+        if (filterStatuses == null || filterStatuses.isEmpty()){
+            tasks = service.getAllTasksSortByAsc(sort);
+        }
+        else {
+            tasks = service.getAllFilter(filterStatuses,sort);
+        }
+        return tasks.stream()
+                .map(task -> modelMapper.map(task, TaskTableResponseDTO.class))
+                .collect(Collectors.toList());
+
+    }
+//    @GetMapping(value = "/tasks", params = {"sortBy"})
+//    public List<TaskTableResponseDTO> getTaskDesc(@RequestParam("sortBy") String sort) {
+//        List<MyTasks> tasks = service.getAllTasksSortByAsc(sort);
+//        return tasks.stream()
+//                .map(task -> modelMapper.map(task, TaskTableResponseDTO.class))
+//                .collect(Collectors.toList());
+//    }
+//---------------------------------------------------------
+
     @PostMapping("/tasks")
     public ResponseEntity<TaskAddRequestDTO> addTask(@RequestBody TaskAddRequestDTO taskAddRequestDTO ){
         MyTasks  createdTask = service.createNewTask(taskAddRequestDTO);
