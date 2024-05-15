@@ -1,7 +1,6 @@
 package sit.int221.mytasksservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,13 +30,10 @@ public class MyTasksService {
         for (MyTasks task : tasks) {
             trimTaskFields(task);
         }
-
 //        if (tasks.isEmpty()) {
 //            throw new ResponseStatusException(HttpStatus.OK, "No tasks found");
 ////            return Collections.emptyList();
 //        }
-
-
         return tasks;
     }
     public MyTasks getTask(Integer id) {
@@ -54,17 +50,24 @@ public class MyTasksService {
     public List<MyTasks> getAllTasksSortByAsc(String sort) {
         return repository.findAll(Sort.by(Sort. Direction.ASC, sort));
     }
-
 //    public List<MyTasks> getAllFilter(String filterStatuses ,String sort){
 //        return repository.findAll().stream().filter(task -> task.getStatus().getName().equals(filterStatuses)).collect(Collectors.toList());
 //
 //    }
-public List<MyTasks> getAllFilter(String filterStatuses, String sort) {
+
+//public List<MyTasks> getAllFilter(String filterStatuses, String sort) {
+//    List<MyTasks> filteredTasks = getAllTasksSortByAsc(sort).stream()
+//            .filter(task -> task.getStatus().getName().equals(filterStatuses))
+//            .collect(Collectors.toList());
+//    return filteredTasks;
+//}
+public List<MyTasks> getAllFilter(List<String> filterStatuses, String sort) {
     List<MyTasks> filteredTasks = getAllTasksSortByAsc(sort).stream()
-            .filter(task -> task.getStatus().getName().equals(filterStatuses))
+            .filter(task -> filterStatuses.contains(task.getStatus().getName()))
             .collect(Collectors.toList());
     return filteredTasks;
 }
+
     public MyTasks createNewTask(TaskAddRequestDTO taskAddRequestDTO){
         Integer findbyIdStatus = Integer.valueOf(taskAddRequestDTO.getStatus());
 
