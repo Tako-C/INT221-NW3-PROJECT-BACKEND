@@ -14,7 +14,5 @@ public class TaskTableResponseDTO {
     private Integer id;
     private String title;
     private String assignees;
-//    private TaskStatusEnum status;
     private String statusName;
-    private Timestamp createdOn;
 }
