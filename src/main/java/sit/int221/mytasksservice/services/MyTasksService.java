@@ -50,67 +50,32 @@ public class MyTasksService {
     public List<MyTasks> getAllTasksSortByAsc(String sort) {
         return repository.findAll(Sort.by(Sort. Direction.ASC, sort));
     }
-//    public List<MyTasks> getAllFilter(String filterStatuses ,String sort){
-//        return repository.findAll().stream().filter(task -> task.getStatus().getName().equals(filterStatuses)).collect(Collectors.toList());
-//
-//    }
+    public List<MyTasks> getAllFilter(List<String> filterStatuses, String sort) {
+        List<MyTasks> filteredTasks = getAllTasksSortByAsc(sort).stream()
+                .filter(task -> filterStatuses.contains(task.getStatus().getName()))
+                .collect(Collectors.toList());
+        return filteredTasks;
+    }
+    public MyTasks createNewTask(TaskAddRequestDTO taskAddRequestDTO) {
+        validateStatus(taskAddRequestDTO.getStatus());
 
-//public List<MyTasks> getAllFilter(String filterStatuses, String sort) {
-//    List<MyTasks> filteredTasks = getAllTasksSortByAsc(sort).stream()
-//            .filter(task -> task.getStatus().getName().equals(filterStatuses))
-//            .collect(Collectors.toList());
-//    return filteredTasks;
-//}
-public List<MyTasks> getAllFilter(List<String> filterStatuses, String sort) {
-    List<MyTasks> filteredTasks = getAllTasksSortByAsc(sort).stream()
-            .filter(task -> filterStatuses.contains(task.getStatus().getName()))
-            .collect(Collectors.toList());
-    return filteredTasks;
-}
+        MyTasks task = modelMapper.map(taskAddRequestDTO, MyTasks.class);
+        processTaskFields(task, taskAddRequestDTO.getDescription(), taskAddRequestDTO.getAssignees());
 
-    public MyTasks createNewTask(TaskAddRequestDTO taskAddRequestDTO){
-        Integer findbyIdStatus = Integer.valueOf(taskAddRequestDTO.getStatus());
-
-        MyTasks task = modelMapper.map(taskAddRequestDTO , MyTasks.class);
-//        Status statusCheckName = statusRepository.findByName(taskAddRequestDTO.getStatus());
-        trimTaskFields(task);
-//        if (statusCheckName == null) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "StatusName is not found !!");
-//
-//        }
-            if (taskAddRequestDTO.getDescription() != null &&taskAddRequestDTO.getDescription().isEmpty()) {
-            task.setDescription(null);
-            }
-            if (taskAddRequestDTO.getAssignees() != null && taskAddRequestDTO.getAssignees().isEmpty()) {
-                task.setAssignees(null);
-            }
-
-        if (taskAddRequestDTO.getStatus() == null) {
-                task.setStatus(getStatusFromName("No Status"));
-
-            } else {
-                task.setStatus(statusRepository.findById(findbyIdStatus).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, " Status Not found")));
-            }
-            return repository.save(task);
-
-
-
+        Integer convertStatusId = Integer.valueOf(taskAddRequestDTO.getStatus());
+        task.setStatus(statusRepository.findById(convertStatusId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Status Not Found")));
+        return repository.save(task);
     }
     public MyTasks updateTask(TaskUpdateRequestDTO taskUpdateRequestDTO) {
-        Integer findbyIdStatus = Integer.valueOf(taskUpdateRequestDTO.getStatus());
-        MyTasks task = modelMapper.map(taskUpdateRequestDTO , MyTasks.class);
-        trimTaskFields(task);
-        task.setTitle(taskUpdateRequestDTO.getTitle());
-        task.setDescription(taskUpdateRequestDTO.getDescription());
-        task.setAssignees(taskUpdateRequestDTO.getAssignees());
+        validateStatus(taskUpdateRequestDTO.getStatus());
 
-        if (taskUpdateRequestDTO.getStatus() == null) {
-            task.setStatus(getStatusFromName("No Status"));
-            taskUpdateRequestDTO.setStatus("No Status");
-        } else {
-//            task.setStatus(getStatusFromName(taskUpdateRequestDTO.getStatus()));
-            task.setStatus(statusRepository.findById(findbyIdStatus).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, " Status Not found")));
-        }
+        MyTasks task = modelMapper.map(taskUpdateRequestDTO, MyTasks.class);
+        processTaskFields(task, taskUpdateRequestDTO.getDescription(), taskUpdateRequestDTO.getAssignees());
+
+        Integer convertStatusId = Integer.valueOf(taskUpdateRequestDTO.getStatus());
+        task.setStatus(statusRepository.findById(convertStatusId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Status Not Found")));
 
         return repository.save(task);
     }
@@ -118,19 +83,30 @@ public List<MyTasks> getAllFilter(List<String> filterStatuses, String sort) {
         repository.deleteById(id);
     }
 
-
     private void trimTaskFields(MyTasks task) {
         task.setAssignees(task.getAssignees() != null ? task.getAssignees().trim() : null);
         task.setTitle(task.getTitle() != null ? task.getTitle().trim() : null);
         task.setDescription(task.getDescription() != null ? task.getDescription().trim() : null);
     }
-    private Status getStatusFromName(String statusName) {
-        Status status = statusRepository.findByName(statusName);
-        if (status == null) {
-            throw new RuntimeException("Status not found with name: " + statusName);
+    private void validateStatus(String status) {
+        if (status == null || status.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status is not null or empty!");
+        }
+    }
+    private void processTaskFields(MyTasks task, String description, String assignees) {
+        trimTaskFields(task);
+
+        if (description != null && description.isEmpty()) {
+            task.setDescription(null);
+        } else {
+            task.setDescription(description);
         }
 
-        return status;
+        if (assignees != null && assignees.isEmpty()) {
+            task.setAssignees(null);
+        } else {
+            task.setAssignees(assignees);
+        }
     }
 
 }
