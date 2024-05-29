@@ -57,13 +57,6 @@ public class MyTasksController {
                 .collect(Collectors.toList());
 
     }
-//    @GetMapping(value = "/tasks", params = {"sortBy"})
-//    public List<TaskTableResponseDTO> getTaskDesc(@RequestParam("sortBy") String sort) {
-//        List<MyTasks> tasks = service.getAllTasksSortByAsc(sort);
-//        return tasks.stream()
-//                .map(task -> modelMapper.map(task, TaskTableResponseDTO.class))
-//                .collect(Collectors.toList());
-//    }
 //---------------------------------------------------------
 
     @PostMapping("/tasks")
